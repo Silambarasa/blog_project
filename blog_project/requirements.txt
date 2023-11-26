@@ -52,7 +52,6 @@ rich==13.7.0
 SecretStorage==3.3.3
 six==1.16.0
 sqlparse==0.4.4
-thefuck @ file:///home/silambarasan/Desktop/thefuck
 twine==4.0.2
 urllib3==2.1.0
 virtualenv==20.24.6
