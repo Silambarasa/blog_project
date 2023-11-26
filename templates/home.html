@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+<!-- object_list is defult.it retrieves blog post -->
+
+<!-- Loop through the list of post objects -->
+
+{% block content %}
+{% for post in object_list %}
+    <h2>
+        <a href="{% url 'article_details' post.pk %}">{{post.title}}</a>
+    </h2>
+    
+    <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a>
+      By {{ post.author.username }}
+    {% if user.is_authenticated %} 
+       {% if user.id == post.author.id %}
+    <a href="{% url 'update_post' post.pk %}"> EDIT</a> 
+    <a href="{% url 'delete_post' post.pk %}"> DELETE</a>
+       {% endif %}
+    
+    <!-- <a href="{% url 'add_category' post.pk}">add_category</a> -->
+    {% endif %}  
+    <p>{{ post.body|slice:":200"|safe }}</p>
+    <p> Title Tag : {{post.title_tag}}</p>
+    
+{% endfor %}
+<ul>
+</ul>
+{% endblock %}

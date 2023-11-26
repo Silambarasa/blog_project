@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+
+{% block title %}
+create new blog post
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h2>post page</h2>
+<br/>
+<div clas="form-group">
+   <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button class="btn btn-primary">Post</button>
+   </form>
+</div>
+<script>
+   var name = '{{user.id}}';
+   document.getElementById('elder').value = name;
+</script>
+{% else %}
+youre'nt login
+{% endif %}
+
+{% endblock %}
