@@ -19,6 +19,9 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     title_tag = models.CharField(max_length=255,default="")
+    #This defines a foreign key relationship to another model
+    #CASCADE means deleting the user will also delete associated posts.
+    #User - This specifies the model that the foreign key relates to (Django's User model)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField(blank=False, null=False, default="")
     post_date = models.DateField(auto_now_add=True)

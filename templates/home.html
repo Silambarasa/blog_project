@@ -1,28 +1,52 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-  {% for post in object_list %}
-    <!-- Displaying Post Title and Link -->
-    <h2><a href="{% url 'article_details' post.pk %}">{{ post.title }}</a></h2>
-    
-    <!-- Displaying Post Category and Author -->
-    <a href="{% url 'category' post.category|slugify %}">{{ post.category }}</a>
-    By {{ post.author.username }}
-    
-    <!-- Edit and Delete Links for Authenticated Users -->
-    {% if user.is_authenticated %} 
-      {% if user.id == post.author.id %}
-        <a href="{% url 'update_post' post.pk %}">EDIT</a> 
-        <a href="{% url 'delete_post' post.pk %}">DELETE</a>
+
+  <div class="posts-container">
+
+    {% for post in object_list %}
+
+      <article class="post">
+
+        <h2><a href="{% url 'article_details' post.pk %}">{{ post.title }}</a></h2>
+
+        <footer>
+          <a href="{% url 'category' post.category|slugify %}">{{ post.category }}</a>
+          By {{ post.author.username }} 
+
+          {% if user.is_authenticated %}
+            {% if user.id == post.author.id %}
+              <a href="{% url 'update_post' post.pk %}">EDIT</a>
+              <a href="{% url 'delete_post' post.pk %}">DELETE</a>
+            {% endif %}
+          {% endif %}
+        </footer>
+
+        <p>{{ post.body|truncatewords:50 }}</p>
+
+        <p>Title Tag: {{ post.title_tag }}</p>
+
+      </article>
+
+    {% endfor %}
+
+  </div>
+
+  {% if is_paginated %}
+
+    <nav class="pagination" role="navigation">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
       {% endif %}
-    {% endif %}  
-    
-    <!-- Preview of Post Body and Title Tag -->
-    <p>{{ post.body|slice:":200"|safe }}</p>
-    <p>Title Tag: {{ post.title_tag }}</p>
-  {% endfor %}
-  
-  <!-- Additional List Markup (if needed) -->
-  <ul>
-  </ul>
+
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+      {% endif %}
+    </nav>
+
+  {% endif %}
+
 {% endblock %}
